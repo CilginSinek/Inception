@@ -1,0 +1,78 @@
+services:
+  wordpress:
+    build: ./requirements/wordpress
+    Dockerfile: Dockerfile
+    networks:
+      - my-network
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: ${WPPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WPRESS_DB_NAME}
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    secrets:
+      - credentials
+    volumes:
+      - wordpress_data:/var/www/html
+
+  mariadb:
+    build: ./requirements/mariadb
+    Dockerfile: Dockerfile
+    networks:
+      - my-network
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_user_password
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+    env_file:
+      - ".env"
+    secrets:
+      - mysql_root_password
+      - mysql_user_password
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  nginx:
+    build: ./requirements/nginx
+    Dockerfile: Dockerfile
+    ports:
+      - "443:443"
+    networks:
+      - my-network
+    restart: always
+    depends_on:
+      - wordpress
+      - mariadb
+
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/iduman/wordpress
+      o: bind
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/iduman/mariadb
+      o: bind
+
+networks:
+  my-network:
+    driver: bridge
+    name: my-network
+
+secrets:
+  mysql_root_password:
+    file: ../secrets/db_root_password.txt
+  mysql_user_password:
+    file: ../secrets/db_user_password.txt
+  credentials:
+    file: ../secrets/credentials.txt
