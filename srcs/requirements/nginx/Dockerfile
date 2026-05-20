@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.22.4
 RUN apk update && apk add nginx openssl
 RUN mkdir -p /run/nginx
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
