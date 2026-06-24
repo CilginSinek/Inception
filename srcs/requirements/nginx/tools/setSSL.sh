@@ -9,6 +9,6 @@ if [ ! -f "$CERT_PATH" ] || [ ! -f "$KEY_PATH" ]; then
 	openssl req -x509 -nodes -newkey rsa:2048 -days 365 \
 		-keyout "$KEY_PATH" \
 		-out "$CERT_PATH" \
-		-subj "/CN=iduman.42.fr"
+		-subj "/CN=${WORDPRESS_URL:-localhost}"
 	chmod 600 "$KEY_PATH"
 fi
