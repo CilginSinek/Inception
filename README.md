@@ -114,3 +114,4 @@ EOF
 
 ### AI used
 - ChatGPT for README.md translation to English and for debug in Mariadb container.
+- It helped identify the underlying causes of issues with WordPress and MariaDB when they were not functioning correctly.
