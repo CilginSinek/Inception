@@ -10,7 +10,7 @@ if [ ! -f "/usr/local/bin/wp" ]; then
 fi
 
 if [ ! -f "/var/www/html/wp-settings.php" ]; then
-    php -d memory_limit=512M /usr/local/bin/wp core download --allow-root --locale=tr_TR --path=/var/www/html
+    php83 -d memory_limit=512M /usr/local/bin/wp core download --allow-root --locale=tr_TR --path=/var/www/html
 fi
 
 if [ ! -f "/var/www/html/wp-config.php" ]; then

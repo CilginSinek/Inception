@@ -2,11 +2,13 @@ name: inception
 
 services:
   wordpress:
-    build: 
+    image: wordpress:1.0
+    container_name: wordpress
+    build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
     networks:
-      - my-network
+      - inception_network
     restart: always
     env_file:
       - .env
@@ -16,30 +18,29 @@ services:
       - wordpress_data:/var/www/html
 
   mariadb:
+    image: mariadb:1.0
+    container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     networks:
-      - my-network
+      - inception_network
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
-      MYSQL_USER: ${WORDPRESS_DB_USER}
-      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     env_file:
       - ".env"
     volumes:
       - mariadb_data:/var/lib/mysql
 
   nginx:
+    image: nginx:1.0
+    container_name: nginx
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     ports:
       - "443:443"
     networks:
-      - my-network
+      - inception_network
     restart: always
     volumes:
       - wordpress_data:/var/www/html
@@ -49,20 +50,21 @@ services:
 
 volumes:
   wordpress_data:
+    name: wordpress_data
     driver: local
     driver_opts:
       type: none
-      device: /home/iduman/wordpress
+      device: /home/iduman/data/wordpress
       o: bind
   mariadb_data:
+    name: mariadb_data
     driver: local
     driver_opts:
       type: none
-      device: /home/iduman/mariadb
+      device: /home/iduman/data/mariadb
       o: bind
 
 networks:
-  my-network:
+  inception_network:
     driver: bridge
-    name: my-network
-
+    name: inception_network

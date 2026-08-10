@@ -1,17 +1,26 @@
 DIR = ./srcs/
+COMPOSE = $(DIR)docker-compose.yml
+
+all: build up
 
 build:
-	docker compose -f $(DIR)docker-compose.yml build
+	docker compose -f $(COMPOSE) build
 
 up:
-	docker compose -f $(DIR)docker-compose.yml up -d
+	docker compose -f $(COMPOSE) up -d
 
 down:
-	docker compose -f $(DIR)docker-compose.yml down
+	docker compose -f $(COMPOSE) down
 
 clean:
-	docker compose -f $(DIR)docker-compose.yml down --rmi all --volumes --remove-orphans
+	docker compose -f $(COMPOSE) down --rmi all --volumes --remove-orphans
 
-re: clean up
+ps:
+	docker compose -f $(COMPOSE) ps
 
-.PHONY: build up down clean re
+logs:
+	docker compose -f $(COMPOSE) logs -f
+
+re: clean all
+
+.PHONY: all build up down clean ps logs re

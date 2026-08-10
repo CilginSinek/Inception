@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache \
     php83-curl \
     php83-mbstring \
     curl \
-    mysql-client
+    mysql-client && ln -s /usr/bin/php83 /usr/bin/php
 
 COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
 
