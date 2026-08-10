@@ -1,16 +1,16 @@
 DIR = ./srcs/
 
 build:
-	docker compose build -f $(DIR)docker-compose.yml
+	docker compose -f $(DIR)docker-compose.yml build
 
 up:
-	docker compose up -d -f $(DIR)docker-compose.yml
+	docker compose -f $(DIR)docker-compose.yml up -d
 
 down:
-	docker compose down -f $(DIR)docker-compose.yml
+	docker compose -f $(DIR)docker-compose.yml down
 
 clean:
-	docker compose down --rmi all --volumes --remove-orphans -f $(DIR)docker-compose.yml
+	docker compose -f $(DIR)docker-compose.yml down --rmi all --volumes --remove-orphans
 
 re: clean up
 

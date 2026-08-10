@@ -2,24 +2,26 @@
 
 set -e
 
-if [ ! -d "/usr/local/bin/wp" ]; then
+if [ ! -f "/usr/local/bin/wp" ]; then
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
     chmod +x wp-cli.phar
-    sudo mv wp-cli.phar /usr/local/bin/wp
+    mv wp-cli.phar /usr/local/bin/wp
+fi
+
+if [ ! -f "/var/www/html/wp-settings.php" ]; then
+    php -d memory_limit=512M /usr/local/bin/wp core download --allow-root --locale=tr_TR --path=/var/www/html
 fi
 
 if [ ! -f "/var/www/html/wp-config.php" ]; then
-    wp core download --locale=tr_TR --path=/var/www/html
-
-    wp config create \
+    /usr/local/bin/wp config create \
         --path=/var/www/html \
         --dbname="$WORDPRESS_DB_NAME" \
         --dbuser="$WORDPRESS_DB_USER" \
         --dbpass="$WORDPRESS_DB_PASSWORD" \
         --dbhost="$WORDPRESS_DB_HOST" 
 
-    wp core install \
+    /usr/local/bin/wp core install \
         --path=/var/www/html \
         --url="$WORDPRESS_URL" \
         --title="$WORDPRESS_TITLE" \
@@ -28,4 +30,4 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
         --admin_email="$WORDPRESS_ADMIN_EMAIL" 
 fi
 
-exec php-fpm8 -F
+exec "$@"

@@ -2,8 +2,9 @@ name: inception
 
 services:
   wordpress:
-    build: ./requirements/wordpress
-    Dockerfile: Dockerfile
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     networks:
       - my-network
     restart: always
@@ -15,8 +16,9 @@ services:
       - wordpress_data:/var/www/html
 
   mariadb:
-    build: ./requirements/mariadb
-    Dockerfile: Dockerfile
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     networks:
       - my-network
     restart: always
@@ -31,13 +33,16 @@ services:
       - mariadb_data:/var/lib/mysql
 
   nginx:
-    build: ./requirements/nginx
-    Dockerfile: Dockerfile
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     ports:
       - "443:443"
     networks:
       - my-network
     restart: always
+    volumes:
+      - wordpress_data:/var/www/html
     depends_on:
       - wordpress
       - mariadb

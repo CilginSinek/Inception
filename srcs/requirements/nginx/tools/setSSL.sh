@@ -12,3 +12,5 @@ if [ ! -f "$CERT_PATH" ] || [ ! -f "$KEY_PATH" ]; then
 		-subj "/CN=${WORDPRESS_URL:-localhost}"
 	chmod 600 "$KEY_PATH"
 fi
+
+exec "$@"

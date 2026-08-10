@@ -106,9 +106,11 @@ EOF
 
 ## Resources
 
-### Documentation
 - WP Quickstart: https://make.wordpress.org/cli/handbook/guides/
 - Docker Compose Docs: https://docs.docker.com/compose/
+- https://stackoverflow.com/questions/20533436/php-fpm-error-on-ec2-the-process-manager-is-missing-static-dynamic-or-ondema
+
+
 
 ### AI used
 - ChatGPT for README.md translation to English and for debug in Mariadb container.

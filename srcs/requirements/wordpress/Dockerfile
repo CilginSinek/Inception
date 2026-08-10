@@ -13,8 +13,11 @@ RUN apk update && apk add --no-cache \
     curl \
     mysql-client
 
+COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
+
 COPY ./tools/setup.sh /usr/local/bin/setup.sh
 WORKDIR /var/www/html
 EXPOSE 9000
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
+CMD ["php-fpm83", "-F"]
