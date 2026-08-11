@@ -42,6 +42,8 @@ services:
     networks:
       - inception_network
     restart: always
+    env_file:
+      - ".env"
     volumes:
       - wordpress_data:/var/www/html
     depends_on:
